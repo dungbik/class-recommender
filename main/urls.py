@@ -14,8 +14,8 @@ urlpatterns = [
 
     path('myinfo/', views.myinfo, name='myinfo'),
     path('class_rec_ver2/mbti', views.mbti, name='mbti'),
-    path('myinfo/keyword/<int:id>/', views.keyword, name='keyword'),
-    path('myinfo/-keyword/<int:id>/', views.keyword, name='-keyword'),
+    path('class_rec_ver2/keyword/', views.keyword, name='keyword'),
+    path('class_rec_ver2/-keyword/', views.keyword, name='-keyword'),
 
     path('logout/', views.logout, name='logout'),
     path('classrec/', views.classrec, name='classrec'),

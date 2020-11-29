@@ -18,31 +18,50 @@ window.onload = function () {
 function changeMbti(first) {
     var mbtiselector = document.querySelector(".mbtiSelect");
     var selectedMbti = mbtiselector.options[mbtiselector.selectedIndex].value;
-
+    var mbti = {
+        "0": "INTJ",
+        "1": "INTP",
+        "2": "INFP",
+        "3": "INFP",
+        "4": "ISTJ",
+        "5": "ISTP",
+        "6": "ISFJ",
+        "7": "ISFP",
+        "8": "ENTJ",
+        "9": "ENTP",
+        "10": "ENFJ",
+        "11": "ENFP",
+        "12": "ESTJ",
+        "13": "ESTP",
+        "14": "ESFJ",
+        "15": "ESFP",
+    };
     var mymbti = document.querySelector(".mymbti");
-    mymbti.innerHTML = selectedMbti;
+
+
+    mymbti.innerHTML = mbti[selectedMbti];
 
     var hidden_mymbti = document.querySelector(".hidden_mymbti");
     hidden_mymbti.value = selectedMbti;
 
     var mbtiframe = document.querySelector(".mbtiframe");
-    if(selectedMbti === "INFJ" || selectedMbti === "INFP" ||
-        selectedMbti === "ENFJ" || selectedMbti === "ENFP" ){
+    if(selectedMbti === "2" || selectedMbti === "3" ||
+        selectedMbti === "10" || selectedMbti === "11" ){
         mbtiframe.style.background = "linear-gradient(-45deg, #a8e063, #56ab2f)";
         //green
     }
-    else if(selectedMbti === "INTJ" || selectedMbti === "INTP" ||
-        selectedMbti === "ENTJ" || selectedMbti === "ENTP" ){
+    else if(selectedMbti === "0" || selectedMbti === "1" ||
+        selectedMbti === "8" || selectedMbti === "9" ){
         mbtiframe.style.background = "linear-gradient(-45deg,rgb(247, 162, 187), rgb(221, 33, 74))";
         //red
     }
-    else if(selectedMbti === "ISFJ" || selectedMbti === "ISTJ" ||
-        selectedMbti === "ESFJ" || selectedMbti === "ESTJ" ){
+    else if(selectedMbti === "6" || selectedMbti === "4" ||
+        selectedMbti === "14" || selectedMbti === "12" ){
         mbtiframe.style.background = "linear-gradient(-45deg, #56CCF2, #2F80ED)";
         //blue
     }
-    else if(selectedMbti === "ISFP" || selectedMbti === "ISTP" ||
-        selectedMbti === "ESTP" || selectedMbti === "ESFP" ) {
+    else if(selectedMbti === "7" || selectedMbti === "5" ||
+        selectedMbti === "13" || selectedMbti === "15" ) {
         mbtiframe.style.background = "linear-gradient(-45deg, #8E2DE2, #4A00E0)";
         //purple
     }

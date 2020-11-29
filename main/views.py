@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 import sklearn
 from scipy.spatial.distance import squareform
 from scipy.spatial.distance import pdist, jaccard
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.core.paginator import Paginator
@@ -53,7 +53,7 @@ def join(request):
         user = User.objects.get(userid=user_id)
         return HttpResponse('이미 존재하는 아이디')
     except User.DoesNotExist:
-        user = User(userid=user_id, password=user_pw, username=user_name, user_number=user_number, mbti='None')
+        user = User(userid=user_id, password=user_pw, username=user_name, user_number=user_number, mbti='0')
         user.save()
 
         keywords = SubjectKeyword.objects.all()
@@ -111,18 +111,25 @@ def mbti(request):
         return HttpResponseRedirect(reverse('main:class_rec_ver2'))
 
 
-def keyword(request, id):
+def keyword(request):
     try:
         user = User.objects.get(userid=request.session['userid'])
-        user_keyword = UserKeyword.objects.get(user_id=user.id, keyword_id=id)
-        if user_keyword.flag == 0:
-            user_keyword.flag = 1
-        else:
-            user_keyword.flag = 0
-        user_keyword.save()
-        return HttpResponseRedirect(reverse('myinfo'))
+        if request.method == "POST":
+            keyword_id = dict(json.loads(request.body.decode("utf-8")).items())['keyword_id']
+            user_keyword = UserKeyword.objects.get(user_id=user.id, keyword_id=keyword_id)
+            if user_keyword.flag == 0:
+                user_keyword.flag = 1
+            else:
+                user_keyword.flag = 0
+            user_keyword.save()
+            return JsonResponse({
+        'success' : True,} , json_dumps_params = {'ensure_ascii': True})
+            #return HttpResponseRedirect(reverse('main:class_rec_ver2'))
     except KeyError:
-        return HttpResponseRedirect(reverse('myinfo'))
+        return JsonResponse({
+            'success': False, }, json_dumps_params={'ensure_ascii': True})
+        #return HttpResponseRedirect(reverse('main:class_rec_ver2'))
+
 
 
 def pre_lec(data):
@@ -746,7 +753,7 @@ def class_rec_ver2(request):
 
 
                 # 기존 모델
-                '''alpha = [0.7, 0.4, 0.4, 0.1]
+                alpha = [0.7, 0.4, 0.4, 0.1]
 
                 if menu4 == 2:
                     alpha.reverse()
@@ -760,7 +767,7 @@ def class_rec_ver2(request):
                     print(recommend_)
                 else:
                     user = user_input(goods_single, lecture_list)
-                    recommend_ = recommend(ts, user)'''
+                    recommend_ = recommend(ts, user)
 
 
                 subj = Subject.objects.all()

@@ -226,34 +226,6 @@ html,body{
     cursor: pointer;
 }
 
-
-.save_setting_button{
-    text-align: center;
-    float: left;
-    margin: 20px 0px 20px 20px;
-    padding: 6px 0px 5px 0px;
-    width: 70px;
-    border-radius: 11px; 
-    background-color: #fff;
-    border-color:#111051;
-    border-width: 2px;
-    border-style: solid;
-    color:  #111051;
-    transition: 0.3s;
-}
-.save_setting_button:hover{
-    transition: 0.3s;
-    border-radius: 20px; 
-    background-color: #111051;
-    border-color: #111051;
-    color: #fff;
-    cursor: pointer;
-}
-
-
-
-
-
 /*__________________________________________________*/
 
 
@@ -365,12 +337,6 @@ html,body{
     opacity: 9;
     transition: 0.3s;
 }
-
-
-
-
-
-
 .class_window{
     width: 800px;
     /* height: 170px; */
@@ -765,3 +731,16 @@ button {
     text-decoration: none;
 }
 
+#mbti_form {
+    margin-bottom: 0;
+}
+
+.mykword {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.mykword2 {
+    text-decoration: none;
+    color: #111051;
+}

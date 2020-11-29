@@ -52,28 +52,28 @@
                         <div class="mbti_window">
                             <span style="font-size: 25px; font-weight: bold; ">MBTI</span>
                             <select name='mbti' class="mbtiSelect" onchange="changeMbti(false)">
-                                <option value='INTJ'>INTJ</option>
-                                <option value='INTP'>INTP</option>
-                                <option value='INFJ'>INFJ</option>
-                                <option value='INFP'>INFP</option>
-                                <option value='ISTJ'>ISTJ</option>
-                                <option value='ISTP'>ISTP</option>
-                                <option value='ISFJ'>ISFJ</option>
-                                <option value='ISFP'>ISFP</option>
-                                <option value='ENTJ'>ENTJ</option>
-                                <option value='ENTP'>ENTP</option>
-                                <option value='ENFJ'>ENFJ</option>
-                                <option value='ENFP'>ENFP</option>
-                                <option value='ESTJ'>ESTJ</option>
-                                <option value='ESTP'>ESTP</option>
-                                <option value='ESFJ'>ESFJ</option>
-                                <option value='ESFP'>ESFP</option>
+                                <option value='0'>INTJ</option>
+                                <option value='1'>INTP</option>
+                                <option value='2'>INFJ</option>
+                                <option value='3'>INFP</option>
+                                <option value='4'>ISTJ</option>
+                                <option value='5'>ISTP</option>
+                                <option value='6'>ISFJ</option>
+                                <option value='7'>ISFP</option>
+                                <option value='8'>ENTJ</option>
+                                <option value='9'>ENTP</option>
+                                <option value='10'>ENFJ</option>
+                                <option value='11'>ENFP</option>
+                                <option value='12'>ESTJ</option>
+                                <option value='13'>ESTP</option>
+                                <option value='14'>ESFJ</option>
+                                <option value='15'>ESFP</option>
                             </select>
                             <br>
                             <div class="mbtiframe" id="mbtiframeRed">
                                 <form id="mbti_form" action="class_rec_ver2/mbti" method="post"> {% csrf_token %}
                                     <input type="hidden" class="hidden_mymbti" id="hidden_mymbti" name="hidden_mymbti" value="{{ user.mbti }}">
-                                    <div class="mymbti" style="font-size: 50px; font-weight: bold; position: relative; text-align: center;">{{ user.mbti }}</div>
+                                    <div class="mymbti" style="font-size: 25px; font-weight: bold; position: relative; text-align: center;">INTJ</div>
                                 </form>
                             </div>
                         </div>
@@ -83,22 +83,17 @@
                             <div class="selected_keyword_window">
                                 {% for keyword in user_keyword_list %}
                                     {% if keyword.flag == 1 %}
-                                        <div id='selected_keyword' class="selected_keyword_button">{{keyword.keyword}}</div>
-                                    {% endif %}
+                                        <div id='selected_keyword' class="selected_keyword_button" key="{{keyword.keyword_id}}">{{ keyword.keyword }}</div>
+                                {% endif %}
                                 {% endfor %}
                             </div>
                             <span style="font-size: 15px; font-weight: bold; opacity: 0.5; ">Unselected</span>
                             <div class="unselected_keyword_window">
                                 {% for keyword in user_keyword_list %}
                                     {% if keyword.flag == 0 %}
-                                        <div id='unselected_keyword' class="unselected_keyword_button">{{keyword.keyword}}</div>
+                                        <div id='unselected_keyword' class="unselected_keyword_button" key="{{keyword.keyword_id}}">{{ keyword.keyword }}</div>
                                     {% endif %}
                                 {% endfor %}
-                            </div>
-                        </div>
-                        <div class="save_setting_button_window">
-                            <div class="save_setting_button"> 
-                                <span style="font-size: 15px; font-weight: bold; ">SAVE</span>
                             </div>
                         </div>
                     </div>
@@ -248,14 +243,39 @@
     var option = [0,0,0];
     $(document).ready(function () {
         $(document).on("click", "#unselected_keyword", function () {
+            var json = {};
             var keyword = $(this).text();
-            $(this).fadeOut();
-            $('.selected_keyword_window').append("<div id='selected_keyword' class='selected_keyword_button'>" + keyword + "</div>" );
+            var id = $(this).attr("key");
+            json['keyword_id'] = id;
+            $.ajax({
+                url:"{% url 'main:keyword' %}",
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(json),
+                dataType:'text',
+                success:function(result){
+                }
+            })
+            $(this).fadeOut(100, () => {
+                $('.selected_keyword_window').append("<div id='selected_keyword' class='selected_keyword_button'>" + keyword + "</div>" )
+            });
         });
     });
 
     $(document).ready(function () {
         $(document).on("click", "#selected_keyword", function () {
+            var json = {};
+            var id = $(this).attr("key");
+            json['keyword_id'] = id;
+            $.ajax({
+                url:"{% url 'main:-keyword' %}",
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(json),
+                dataType:'text',
+                success:function(result){
+                }
+            })
             var keyword = $(this).detach();
             $('.unselected_keyword_window').append("<div id='unselected_keyword' class='unselected_keyword_button'>" + keyword.text() + "</div>" );
         });
@@ -329,28 +349,5 @@
         const popup = document.querySelector('#popup');
     popup.classList.add('hide');
     }
-
-    $(document).ready(function () {
-        $(document).on("click", ".save_setting_button_window", function () {
-            var keyowrd = {};
-            var keyword_list = [];
-            var keywords = $('.selected_keyword_window').children('#selected_keyword');
-            for(var i=0;i<keywords.length;i++){
-                keyword_list = keyword_list.concat(keywords[i].textContent);
-            }
-            keyowrd['keyword_list'] = keyword_list;
-            
-            $.ajax({
-                url:"{% url 'main:class_rec_ver2' %}",
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(keyowrd),
-                dataType:'text',
-                success:function(result){
-                }
-            })
-
-        });
-    });
 
 </script>
