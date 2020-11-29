@@ -640,10 +640,16 @@ def about(request):
     })
 
 def class_rec_ver2(request):
+    user = User.objects.get(userid=request.session['userid'])
+
     subjects_id = []
     subjects = Subject.objects.all().order_by('subj_name')
-
-    user = User.objects.get(userid=request.session['userid'])
+    try:
+        wishlist = get_list_or_404(WishList, user_id=user.id)
+        for wish in wishlist:
+            subjects = subjects.exclude(subj_id=wish.subj_id)
+    except:
+        pass
 
     user_keyword_list = []
     try:
