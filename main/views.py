@@ -13,17 +13,17 @@ from django.core.paginator import Paginator
 import json
 from . import apps
 from .models import *
-import tensorflow as tf
+'''import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Embedding, Dot, Add, Flatten
 from tensorflow.keras.layers import Dense, Concatenate, Activation
 from tensorflow.keras.regularizers import l2
-from tensorflow.keras.optimizers import SGD, Adamax
+from tensorflow.keras.optimizers import SGD, Adamax'''
 
 
 model = None
-
+mu = 0
 
 # Create your views here.
 def index(request):
@@ -33,21 +33,35 @@ def index(request):
 def login(request):
     try:
         request.session['userid']
-
-        if model is None: # 로그인 했을 때 모델이 비어있으면
-            pass
-
         return HttpResponseRedirect(reverse('main:class_rec_ver2'))
     except:
         return render(request, 'main/login.html')
 
 
 def sign_in(request):
+    global model, mu
     user_id = request.POST['user_id']
     user_pw = request.POST['user_pw']
     try:
         user = User.objects.get(userid=user_id, password=user_pw)
         request.session['userid'] = user_id
+        '''if model is None: # 로그인 했을 때 모델이 비어있으면
+            try:
+                goods = list(UserSubject.objects.values_list('user_id', 'subj_id', 'good'))
+                goods = [list(x) for x in goods]
+                mbti = list(User.objects.values_list('id', 'mbti'))
+                mbti = [list((x[0], int(x[1]))) for x in mbti]
+
+                goods = pd.DataFrame(goods, columns=["id", "lecture", "rating"])
+                mbti = pd.DataFrame(mbti, columns=["id", "mbti"])
+
+                print(goods)
+                print(mbti)
+
+                mu = goods.rating.mean()  # 학습 데이터 평균
+                cat_NeuralMF_begin(goods, mbti, 200)
+            except Exception as ex:
+                print(ex)'''
         return HttpResponseRedirect(reverse('main:class_rec_ver2'))
     except User.DoesNotExist:
         return HttpResponse('실패')
@@ -661,6 +675,77 @@ def about(request):
     })
 
 
+def RMSE(y_true, y_pred):
+    return tf.sqrt(tf.reduce_mean(tf.square(y_true - y_pred)))
+
+def cat_NeuralMF_begin(ratings, mbti, lec_num):
+    global model
+    ratings = pd.merge(ratings, mbti, on='id')
+
+    L = 16
+    K = 20
+    mu = ratings.rating.mean()
+    M = 10001 + lec_num
+    N = 10001 + lec_num
+
+    user = Input(shape=(1,))
+    item = Input(shape=(1,))
+    P_embedding = Embedding(M, K, embeddings_regularizer=l2())(user)
+    Q_embedding = Embedding(N, K, embeddings_regularizer=l2())(item)
+    user_bias = Embedding(M, 1, embeddings_regularizer=l2())(user)
+    item_bias = Embedding(N, 1, embeddings_regularizer=l2())(item)
+
+    R = layers.dot([P_embedding, Q_embedding], axes=2)
+    R = layers.add([R, user_bias, item_bias])
+    R = Flatten()(R)
+
+    P_embedding = Flatten()(P_embedding)
+    Q_embedding = Flatten()(Q_embedding)
+    user_bias = Flatten()(user_bias)
+    item_bias = Flatten()(item_bias)
+    mbti = Input(shape=(1,))
+    mbti_embedding = Embedding(L, 5, embeddings_regularizer=l2())(mbti)
+    mbti_layer = Flatten()(mbti_embedding)
+
+    R = Concatenate()([P_embedding, Q_embedding, user_bias, item_bias, mbti_layer])
+    R = Dense(2048)(R)
+    R = Activation('linear')(R)
+    R = Dense(256)(R)
+    R = Activation('linear')(R)
+    R = Dense(1)(R)
+
+    model = Model(inputs=[user, item, mbti], outputs=R)
+    model.compile(
+        loss=RMSE,
+        optimizer=SGD(),
+        metrics=[RMSE]
+    )
+    #model.summary()
+
+    result = model.fit(
+        x=[ratings.id.values, ratings.lecture.values, ratings.mbti.values],
+        y=ratings.rating.values - mu,
+        epochs=80,
+        batch_size=1
+    )
+
+
+def predict(user_id, lec_num, mbti_num):
+    global model, mu
+    print(model)
+    user_ids = np.full((lec_num), user_id)
+    mbti_ids = np.full((lec_num), mbti_num)
+    item_ids = np.arange(10001, 10001 + lec_num)
+    # print(item_ids)
+
+    predictions = model.predict([user_ids, item_ids, mbti_ids]) + mu
+    temp = pd.DataFrame(item_ids, columns=['lec'])
+    temp['score'] = predictions
+    temp = temp.sort_values(by=['score'], axis=0, ascending=False)
+    print(temp)
+    return list(temp['lec'])
+
+
 def class_rec_ver2(request):
     user = User.objects.get(userid=request.session['userid'])
 
@@ -760,13 +845,16 @@ def class_rec_ver2(request):
                 goods = [list(x) for x in goods]
                 wish = list(WishList.objects.values_list('user_id', 'subj_id'))
                 wish = [list(x) for x in wish]
+                mbti = list(User.objects.values_list('id', 'mbti'))
+                mbti = [list(x) for x in mbti]
                 lecture = list(SubjectKeywords.objects.values_list('subj_id', 'keyword_id', 'value'))
                 lecture = [list((x[0], x[1], 1)) if x[2] > 1 else list(x) for x in
                            lecture]  # if subjects_id.count(x[0]) > 0
 
                 # MF 모델
+                '''predict(15, 200, 0)
 
-                apps.model;
+                recommend_ = []'''
 
                 # 기존 모델
                 alpha = [0.7, 0.4, 0.4, 0.1]
