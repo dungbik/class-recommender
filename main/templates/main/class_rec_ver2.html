@@ -51,7 +51,7 @@
                         </div>
                         <div class="mbti_window">
                             <span style="font-size: 25px; font-weight: bold; ">MBTI</span>
-                            <select name='mbti' class="mbtiSelect" onchange="changeMbti()">      
+                            <select name='mbti' class="mbtiSelect" onchange="changeMbti(false)">
                                 <option value='INTJ'>INTJ</option>
                                 <option value='INTP'>INTP</option>
                                 <option value='INFJ'>INFJ</option>
@@ -70,9 +70,11 @@
                                 <option value='ESFP'>ESFP</option>
                             </select>
                             <br>
-                            <div class="mbtiframe" id="mbtiframeRed"> 
-                                <div class="mymbti" style="font-size: 25px; font-weight: bold; position: relative; text-align: center;">INTJ</div>
-                                <!--<IMG SRC="INTJ.png" style="position: relative; left: 120px;" width="357" height='257'> -->
+                            <div class="mbtiframe" id="mbtiframeRed">
+                                <form id="mbti_form" action="class_rec_ver2/mbti" method="post"> {% csrf_token %}
+                                    <input type="hidden" class="hidden_mymbti" id="hidden_mymbti" name="hidden_mymbti" value="{{ user.mbti }}">
+                                    <div class="mymbti" style="font-size: 50px; font-weight: bold; position: relative; text-align: center;">{{ user.mbti }}</div>
+                                </form>
                             </div>
                         </div>
                         <div class="keyword_window">

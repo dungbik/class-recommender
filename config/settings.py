@@ -25,7 +25,7 @@ SECRET_KEY = '226#2nz6af=@=l$z%cowuq#1yq(&4t*ah%&5dr2ebdrsqtila('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['catcosmic.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'catcosmic.pythonanywhere.com']
 
 
 # Application definition

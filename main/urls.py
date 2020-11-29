@@ -13,7 +13,7 @@ urlpatterns = [
     path('join/', views.join, name='join'),
 
     path('myinfo/', views.myinfo, name='myinfo'),
-    path('myinfo/mbti', views.mbti, name='mbti'),
+    path('class_rec_ver2/mbti', views.mbti, name='mbti'),
     path('myinfo/keyword/<int:id>/', views.keyword, name='keyword'),
     path('myinfo/-keyword/<int:id>/', views.keyword, name='-keyword'),
 

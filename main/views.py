@@ -741,7 +741,12 @@ def class_rec_ver2(request):
                 wish = [list(x) for x in wish]
                 lecture = list(SubjectKeywords.objects.values_list('subj_id', 'keyword_id', 'value'))
                 lecture = [list((x[0], x[1], 1)) if x[2] > 1 else list(x) for x in lecture] #  if subjects_id.count(x[0]) > 0
-                alpha = [0.7, 0.4, 0.4, 0.1]
+
+                # MF 모델
+
+
+                # 기존 모델
+                '''alpha = [0.7, 0.4, 0.4, 0.1]
 
                 if menu4 == 2:
                     alpha.reverse()
@@ -755,7 +760,7 @@ def class_rec_ver2(request):
                     print(recommend_)
                 else:
                     user = user_input(goods_single, lecture_list)
-                    recommend_ = recommend(ts, user)
+                    recommend_ = recommend(ts, user)'''
 
 
                 subj = Subject.objects.all()
