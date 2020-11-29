@@ -818,7 +818,7 @@ def class_rec_ver2(request):
 
     return render(request, 'main/class_rec_ver2.html',{
         'user': user,
-        'keyword_name_list': keyword_list,
+        'keyword_name_list': keyword_name_list,
         'subj_and_keyword': subj_and_keyword,
         'user_keyword_list': user_keyword_list,
     })
@@ -860,6 +860,13 @@ def pre_lec_ver2(request):
         subj_id = pre_lec['subject']
         good = int(pre_lec['good'])
         rating = float(pre_lec['rating'])
+        keyword_list = pre_lec['keyword_list']
+        for keyword in keyword_list:
+            keyword = SubjectKeyword.objects.get(keyword=keyword)
+            keywords = SubjectKeywords.objects.get(subj_id=subj_id, keyword_id=keyword.keyword_id)
+            keywords.value = keywords.value + 1
+            keywords.save()
+
         user_subject_new = UserSubject(user_id=user_id, subj_id=subj_id, good=good, rating=rating)
         print(user_subject_new.__dict__)
         user_subject_new.save()
