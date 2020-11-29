@@ -113,7 +113,7 @@ html,body{
     margin: 00px 0px 0px 0px;
     color: #111051;
     width: 300px;
-    height: 1130px; 
+    height: 100%;
     background-color: #fdfdff; 
     border-radius: 0px 10px 10px 0px;
     box-shadow: 0px 0px 8px -2px rgb(199, 199, 199); 
@@ -185,7 +185,7 @@ html,body{
     cursor: pointer;
 }
 .unselected_keyword_window{
-    width: 240px;
+    width: 270px;
     padding: 5px 0px 5px 0px;
     margin: 0px 0px 10px 0px;
     background-color: #fff;

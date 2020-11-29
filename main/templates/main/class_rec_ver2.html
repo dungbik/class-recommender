@@ -18,6 +18,9 @@
                         <span style="font-size: 15px; font-weight: bold; ">{{ user.username }}</span><br>
                         <span style="font-size: 10px; font-weight: bold; opacity: 50; ">{{ user.user_number }}</span>
                     </div>
+                    <div class="logout">
+                        <a href="{% url 'main:logout' %}" >log out</a>
+                    </div>
                 </div>
         
                 <ul class="menu_list" >
@@ -110,6 +113,7 @@
                                 
                             <div id="popup" class="hide">
                                 <div class="content">
+                                    <div onclick="closePopup(false)" class="searchBt2">X</div>
                                     <div class="option_array">
                                         <span style="font-size: 30px; font-weight: bold; color: #111051">강의 추천 기준을 선택하세요</span>
                                         <div class="optionlist">
@@ -136,7 +140,7 @@
                                         </div>
                                     </div>
                                     <form action="" method="get" id="searchForm" name="search">
-                                        <div type="submit" onclick="closePopup()" class="searchBt2">Search</div>
+                                        <div type="submit" onclick="closePopup(true)" class="searchBt2">Search</div>
                                         <input type="hidden" id='menu0' name='menu0'>
                                         <input type="hidden" id='menu1' name='menu1'>
                                         <input type="hidden" id='menu2' name='menu2'>
@@ -344,10 +348,11 @@
     popup.classList.remove('hide');
     }
 
-    function closePopup() {
-        $('#searchForm').submit();
+    function closePopup(search) {
+        if (search)
+            $('#searchForm').submit();
         const popup = document.querySelector('#popup');
-    popup.classList.add('hide');
+        popup.classList.add('hide');
     }
 
 </script>

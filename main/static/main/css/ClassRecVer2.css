@@ -59,6 +59,19 @@ html,body{
     padding: 0px 0px 0px 0px;
     /*background: #a3a2b6; */
 }
+.logout{
+    display: inline-block;
+    float: right;
+    text-align: center;
+    margin: 20px 10px;
+}
+.logout a {
+    text-decoration: none;
+    color: #111051;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 2px;
+}
 .menu_list{
     padding: 30px 0px 10px 0px
 }
@@ -112,7 +125,7 @@ html,body{
     margin: 0px 0px 0px 0px;
     color: #111051;
     width: 300px;
-    height: 1130px;
+    height: 100%;
     background-color: #fdfdff; 
     border-radius: 0px 10px 10px 0px;
     box-shadow: 0px 0px 8px -2px rgb(199, 199, 199); 
@@ -199,7 +212,7 @@ html,body{
     cursor: pointer;
 }
 .unselected_keyword_window{
-    width: 240px;
+    width: 270px;
     padding: 5px 0px 5px 0px;
     margin: 0px 0px 10px 0px;
     background-color: #fff;
@@ -704,7 +717,7 @@ button {
 }
 .searchBt2 {
     background-image: linear-gradient(to right, #5f2c82 0%, #49a09d  51%, #5f2c82  100%);
-    margin: 40px 0px 20px 0px;
+    margin: 20px 0px 20px 0px;
     width: 60px;
     height: 40px;
     padding: 2px 20px;
@@ -716,6 +729,7 @@ button {
     border-radius: 10px;
     display: flex;
     justify-content: center;
+    font-size: 1.4rem;
   }
  
   .searchBt2:hover {
@@ -723,6 +737,7 @@ button {
     color: #fff;
     width: 90px;
     text-decoration: none;
+
   }
  
 .arraylist a:hover{
