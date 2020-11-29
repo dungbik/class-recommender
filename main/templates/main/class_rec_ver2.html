@@ -147,21 +147,21 @@
                                 </div>
                             </div>
                             
-                        {% for subject, keywords in subj_and_keyword %}
+                        {% for subject, keywords in page_obj %}
                             <div class="class_window">
                                 <div class="class_basic_window">
                                     <div class="class_name_window">
-                                        <span style="font-size: 35px; font-weight: bold; ">{{subject.subj_name}}</span><br>
-                                        <span style="font-size: 20px; font-weight: bold; ">{{subject.prof_name}}</span><br>
-                                    </div>
-                                    <div class="class_keyword_window">
-                                    {% for keyword in keywords %}
-                                        {% if keyword in keyword_name_list %}
-                                            <div class="selected_keyword_show">{{ keyword }}</div>
-                                        {% else %}
-                                            <div class="unselected_keyword_show">{{ keyword }}</div>
-                                        {% endif%}
-                                    {% endfor %}
+                                        <span style="font-size: 2.25rem; font-weight: bold; ">{{subject.subj_name}}</span><br>
+                                        <span style="font-size: 2rem; font-weight: bold; ">{{subject.prof_name}}</span>
+                                        <div class="class_keyword_window">
+                                            {% for keyword in keywords %}
+                                                {% if keyword in keyword_name_list %}
+                                                    <div class="selected_keyword_show">{{ keyword }}</div>
+                                                {% else %}
+                                                    <div class="unselected_keyword_show">{{ keyword }}</div>
+                                                {% endif%}
+                                            {% endfor %}
+                                        </div>
                                     </div>
                                     <div class="class_button_window">
                                         <div class="plus_button" >
@@ -217,7 +217,23 @@
                                 
                             </div>
                         {% endfor %}
-                      
+                         <div class="pagination" style="margin-left:40%;">
+                            <span class="step-links">
+                                {% if page_obj.has_previous %}
+                                    <a href="?page=1&menu4={{ get.menu4 }}&menu={{ get.menu }}&menu0={{ get.menu0 }}&menu1={{ get.menu1 }}&menu2={{ get.menu2 }}&menu3={{ get.menu3 }}&keyword={{ get.keyword }}">&laquo; first</a>
+                                    <a href="?page={{ page_obj.previous_page_number }}&menu4={{ get.menu4 }}&menu={{ get.menu }}&menu0={{ get.menu0 }}&menu1={{ get.menu1 }}&menu2={{ get.menu2 }}&menu3={{ get.menu3 }}&keyword={{ get.keyword }}">previous</a>
+                                {% endif %}
+
+                                <span class="current">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                </span>
+
+                                {% if page_obj.has_next %}
+                                    <a href="?page={{ page_obj.next_page_number }}&menu4={{ get.menu4 }}&menu={{ get.menu }}&menu0={{ get.menu0 }}&menu1={{ get.menu1 }}&menu2={{ get.menu2 }}&menu3={{ get.menu3 }}&keyword={{ get.keyword }}">next</a>
+                                    <a href="?page={{ page_obj.paginator.num_pages }}&menu4={{ get.menu4 }}&menu={{ get.menu }}&menu0={{ get.menu0 }}&menu1={{ get.menu1 }}&menu2={{ get.menu2 }}&menu3={{ get.menu3 }}&keyword={{ get.keyword }}">last &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 

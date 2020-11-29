@@ -788,11 +788,18 @@ def class_rec_ver2(request):
         except Exception as ex:
             print(ex.__str__())
             pass
+
+        paginator = Paginator(subj_and_keyword, 5)
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         return render(request, 'main/class_rec_ver2.html', {
             'user': User.objects.get(userid=request.session['userid']),
             'keyword_name_list': keyword_name_list,
             'subj_and_keyword': subj_and_keyword,
             'user_keyword_list': user_keyword_list,
+            'page_obj': page_obj,
         })
 
     if request.method == 'POST':

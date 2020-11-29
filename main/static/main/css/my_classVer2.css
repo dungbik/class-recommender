@@ -101,6 +101,7 @@ html,body{
 
 .content_container{
     display: flex;
+    width: 1100px;
     flex-direction: row;
     justify-content: space-around;
 }
@@ -117,7 +118,7 @@ html,body{
     display: flex;
     width: 500px;
     background-color: #fdfdff; 
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 0px 0px 8px -2px rgb(199, 199, 199); 
 }
 .Pre_lecture_title{
@@ -140,7 +141,7 @@ html,body{
     display: flex;
     width: 500px;
     background-color: #fdfdff; 
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 0px 0px 8px -2px rgb(199, 199, 199); 
 }
 
@@ -166,7 +167,7 @@ html,body{
     cursor: pointer;
 }
 .class_name_window{
-    padding: 10px 0px 10px 20px;
+    padding: 0px 0px 10px 20px;
 }
 .minus_button{
     float: right;
